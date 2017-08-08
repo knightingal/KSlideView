@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.download.ImageDownloader;
 
 public class YImageSlider extends ViewGroup implements YImageView.EdgeListener {
     private static final String TAG = "YImageSlider";
@@ -123,9 +122,9 @@ public class YImageSlider extends ViewGroup implements YImageView.EdgeListener {
             YImageView yImageView = getHideLeft();
             if (src != null) {
                 ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.getInstance().getOptions());
-                yImageView.setDisplay();
+                yImageView.setDisplay(true);
             } else {
-                yImageView.setNoDisplay();
+                yImageView.setDisplay(false);
             }
         }
     }
@@ -137,9 +136,9 @@ public class YImageSlider extends ViewGroup implements YImageView.EdgeListener {
             YImageView yImageView = getContentView();
             if (src != null) {
                 ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.getInstance().getOptions());
-                yImageView.setDisplay();
+                yImageView.setDisplay(true);
             } else {
-                yImageView.setNoDisplay();
+                yImageView.setDisplay(false);
             }
         }
     }
@@ -150,9 +149,9 @@ public class YImageSlider extends ViewGroup implements YImageView.EdgeListener {
             YImageView yImageView = getHideRight();
             if (src != null) {
                 ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.getInstance().getOptions());
-                yImageView.setDisplay();
+                yImageView.setDisplay(true);
             } else {
-                yImageView.setNoDisplay();
+                yImageView.setDisplay(false);
             }
         }
     }
@@ -193,11 +192,11 @@ public class YImageSlider extends ViewGroup implements YImageView.EdgeListener {
                 nextButton.setVisibility(View.VISIBLE);
             }
             ImageLoader.getInstance().displayImage(imgUrl, getHideLeft(), DIOptionsNoneScaled.getInstance().getOptions());
-            getHideLeft().setDisplay();
+            getHideLeft().setDisplay(true);
         } else {
             backButton.setVisibility(View.INVISIBLE);
             ImageLoader.getInstance().displayImage(null, getHideLeft());
-            getHideLeft().setNoDisplay();
+            getHideLeft().setDisplay(false);
         }
 
     }
@@ -223,11 +222,11 @@ public class YImageSlider extends ViewGroup implements YImageView.EdgeListener {
                 backButton.setVisibility(View.VISIBLE);
             }
             ImageLoader.getInstance().displayImage(imgUrl, hideRight, DIOptionsNoneScaled.getInstance().getOptions());
-            hideRight.setDisplay();
+            hideRight.setDisplay(true);
         } else {
             nextButton.setVisibility(View.INVISIBLE);
             ImageLoader.getInstance().displayImage(null, hideRight);
-            hideRight.setNoDisplay();
+            hideRight.setDisplay(false);
         }
     }
 
