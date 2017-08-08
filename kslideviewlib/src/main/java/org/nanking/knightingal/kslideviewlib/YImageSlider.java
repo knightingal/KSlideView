@@ -121,7 +121,7 @@ public class YImageSlider extends ViewGroup implements YImageView.EdgeListener {
             String src = imgChangeListener.getImgSrcByIndex(index - 1, this);
             YImageView yImageView = getHideLeft();
             if (src != null) {
-                ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.getInstance().getOptions());
+                ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.INSTANCE.getOptions());
                 yImageView.setDisplay(true);
             } else {
                 yImageView.setDisplay(false);
@@ -135,7 +135,7 @@ public class YImageSlider extends ViewGroup implements YImageView.EdgeListener {
             String src = imgChangeListener.getImgSrcByIndex(index, this);
             YImageView yImageView = getContentView();
             if (src != null) {
-                ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.getInstance().getOptions());
+                ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.INSTANCE.getOptions());
                 yImageView.setDisplay(true);
             } else {
                 yImageView.setDisplay(false);
@@ -148,7 +148,7 @@ public class YImageSlider extends ViewGroup implements YImageView.EdgeListener {
             String src = imgChangeListener.getImgSrcByIndex(index + 1, this);
             YImageView yImageView = getHideRight();
             if (src != null) {
-                ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.getInstance().getOptions());
+                ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.INSTANCE.getOptions());
                 yImageView.setDisplay(true);
             } else {
                 yImageView.setDisplay(false);
@@ -191,7 +191,7 @@ public class YImageSlider extends ViewGroup implements YImageView.EdgeListener {
             if (nextButton.getVisibility() == View.INVISIBLE) {
                 nextButton.setVisibility(View.VISIBLE);
             }
-            ImageLoader.getInstance().displayImage(imgUrl, getHideLeft(), DIOptionsNoneScaled.getInstance().getOptions());
+            ImageLoader.getInstance().displayImage(imgUrl, getHideLeft(), DIOptionsNoneScaled.INSTANCE.getOptions());
             getHideLeft().setDisplay(true);
         } else {
             backButton.setVisibility(View.INVISIBLE);
@@ -221,7 +221,7 @@ public class YImageSlider extends ViewGroup implements YImageView.EdgeListener {
             if (backButton.getVisibility() == View.INVISIBLE) {
                 backButton.setVisibility(View.VISIBLE);
             }
-            ImageLoader.getInstance().displayImage(imgUrl, hideRight, DIOptionsNoneScaled.getInstance().getOptions());
+            ImageLoader.getInstance().displayImage(imgUrl, hideRight, DIOptionsNoneScaled.INSTANCE.getOptions());
             hideRight.setDisplay(true);
         } else {
             nextButton.setVisibility(View.INVISIBLE);
