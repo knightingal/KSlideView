@@ -60,9 +60,9 @@ class YImageView : ImageView {
         val top:Int
         val right:Int
         val bottom:Int
-        val contentImageWidth = yImageSlider.getContentView().bitmap_W
+        val contentImageWidth = yImageSlider.contentView.bitmap_W
         if (locationIndex == 1) {
-            if (yImageSlider.getAlingLeftOrRight() == 0) {
+            if (yImageSlider.alingLeftOrRight == 0) {
                 left = contentImageWidth + YImageSlider.SPLITE_W
                 right = contentImageWidth + YImageSlider.SPLITE_W + bitmap_W
             } else {
@@ -70,7 +70,7 @@ class YImageView : ImageView {
                 right = screamW + YImageSlider.SPLITE_W + bitmap_W
             }
         } else if (locationIndex == -1) {
-            if (yImageSlider.getAlingLeftOrRight() == 0) {
+            if (yImageSlider.alingLeftOrRight == 0) {
                 left = -bitmap_W - YImageSlider.SPLITE_W
                 right = -YImageSlider.SPLITE_W
             } else {
@@ -78,7 +78,7 @@ class YImageView : ImageView {
                 right = -(YImageSlider.SPLITE_W + contentImageWidth - screamW)
             }
         } else {
-            if (yImageSlider.getAlingLeftOrRight() == 0) {
+            if (yImageSlider.alingLeftOrRight == 0) {
                 left = 0
                 right = bitmap_W
             } else {
@@ -90,6 +90,7 @@ class YImageView : ImageView {
         top = (screamH - bitmap_H) / 2
         originY = top
         bottom = top + bitmap_H
+        Log.d(TAG, "left=$left, right=$right, top=$top, bottom=$bottom")
 
         val isChanged = super.setFrame(0, top, bitmap_W, bottom)
         x = left.toFloat()
@@ -98,10 +99,10 @@ class YImageView : ImageView {
     }
 
     override fun onTouchEvent(event:MotionEvent):Boolean {
-        when (event?.action?.and(MotionEvent.ACTION_MASK)) {
+        when (event.action.and(MotionEvent.ACTION_MASK)) {
             MotionEvent.ACTION_DOWN -> onTouchDown(event)
             MotionEvent.ACTION_MOVE -> onTouchMove(event)
-            MotionEvent.ACTION_UP -> onTouchUp(event)
+            MotionEvent.ACTION_UP -> onTouchUp()
         }
         return true
     }
@@ -334,7 +335,7 @@ class YImageView : ImageView {
         setX.start()
     }
 
-    private fun  onTouchUp(event: MotionEvent) {
+    private fun onTouchUp() {
         val upx = x
         if (upx > 0 && yImageSlider.hideLeft.isDisplay) {
             doBackImgAnim()

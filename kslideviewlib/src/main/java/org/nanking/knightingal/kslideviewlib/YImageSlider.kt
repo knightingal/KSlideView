@@ -1,0 +1,208 @@
+package org.nanking.knightingal.kslideviewlib
+
+import android.content.Context
+import android.graphics.Color
+import android.util.AttributeSet
+import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+
+import com.nostra13.universalimageloader.core.ImageLoader
+
+class YImageSlider : ViewGroup, YImageView.EdgeListener {
+    companion object {
+
+        val TAG = "YImageSlider"
+        val SPLITE_W = 48
+    }
+    constructor(context:Context) : super(context) {
+        init(context)
+    }
+
+
+    constructor(context:Context, attrs:AttributeSet):super(context, attrs) {
+        init(context)
+    }
+
+    constructor(context:Context, attrs:AttributeSet, defStyleAttr:Int):super(context, attrs, defStyleAttr) {
+        init(context);
+    }
+
+
+    private fun init(context:Context) {
+        contentView = YImageView(context, this, 0, 0)
+        contentView.setEdgeListener(this)
+        hideLeft = YImageView(context, this, -1, 1)
+        hideRight = YImageView(context, this, 1, 2)
+
+        hideLeft.setEdgeListener(this)
+        hideRight.setEdgeListener(this)
+
+        backButton = ImageView(context)
+        nextButton = ImageView(context)
+
+
+        backButton.setImageResource(R.drawable.ic_keyboard_arrow_left_black_48dp)
+        nextButton.setImageResource(R.drawable.ic_keyboard_arrow_right_black_48dp)
+        backButton.setBackgroundColor(Color.parseColor("#80000000"))
+        nextButton.setBackgroundColor(Color.parseColor("#80000000"))
+
+        backButton.visibility = View.INVISIBLE
+
+        nextButton.setOnClickListener { contentView.doNextImgAnim() }
+
+        backButton.setOnClickListener { contentView.doBackImgAnim() }
+
+        addView(contentView)
+        addView(hideLeft)
+        addView(hideRight)
+
+        addView(backButton)
+        addView(nextButton)
+    }
+
+    lateinit var contentView:YImageView
+    lateinit var hideLeft:YImageView
+    lateinit var hideRight:YImageView
+
+
+    private lateinit var backButton:ImageView
+
+    private lateinit var nextButton:ImageView
+
+
+
+    override fun onLayout(changed:Boolean, l:Int, t:Int, r:Int, b:Int) {
+        val width = r - l
+        val height = b - t
+        contentView.layout(0, 0, width, height)
+        hideLeft.layout(0, 0, width, height)
+        hideRight.layout(0, 0, width, height)
+
+        backButton.layout(0, height / 2 - 24, 48, height / 2 + 24)
+        nextButton.layout(width - 48, height / 2 - 24, width, height / 2 + 24)
+    }
+
+    override fun onXEdge(yImageView:YImageView) {
+
+    }
+
+    override fun onYEdge(yImageView:YImageView) {
+
+    }
+
+    fun setHideLeftSrc(index:Int) {
+        if (imgChangeListener != null) {
+            val src = imgChangeListener?.getImgSrcByIndex(index - 1, this)
+            val yImageView = hideLeft
+            if (src != null) {
+                ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.options)
+                yImageView.isDisplay = true
+            } else {
+                yImageView.isDisplay = false
+            }
+        }
+    }
+
+    fun setContentSrc(index:Int) {
+
+        if (imgChangeListener != null) {
+            val src = imgChangeListener?.getImgSrcByIndex(index, this);
+            val yImageView = contentView
+            if (src != null) {
+                ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.options);
+                yImageView.isDisplay = true
+            } else {
+                yImageView.isDisplay = false
+            }
+        }
+    }
+
+    fun setHideRightSrc(index:Int) {
+        if (imgChangeListener != null) {
+            val src = imgChangeListener?.getImgSrcByIndex(index + 1, this)
+            val yImageView = hideRight
+            if (src != null) {
+                ImageLoader.getInstance().displayImage(src, yImageView, DIOptionsNoneScaled.options)
+                yImageView.isDisplay = true
+            } else {
+                yImageView.isDisplay = false
+            }
+        }
+    }
+
+    public interface ImgChangeListener {
+        fun onGetBackImg(yImageSlider:YImageSlider):String
+
+        fun onGetNextImg(yImageSlider:YImageSlider):String
+
+        fun getImgSrcByIndex(index:Int, yImageSlider:YImageSlider):String
+    }
+
+
+    var imgChangeListener:ImgChangeListener? = null
+
+    override fun onGetBackImg(yImageView:YImageView) {
+        Log.d(TAG, "onGetBackImg")
+        var tmp = contentView
+        contentView = hideLeft
+        hideLeft = hideRight
+        hideRight = tmp
+
+        contentView.locationIndex = (0)
+        hideLeft.locationIndex = (-1)
+        hideRight.locationIndex = (1)
+        alingLeftOrRight = 0
+        var imgUrl:String? = null
+
+        if (imgChangeListener != null) {
+            imgUrl = imgChangeListener?.onGetBackImg(this)
+        }
+        if (imgUrl != null) {
+            if (nextButton.visibility == View.INVISIBLE) {
+                nextButton.visibility = (View.VISIBLE)
+            }
+            ImageLoader.getInstance().displayImage(imgUrl, hideLeft, DIOptionsNoneScaled.options)
+            hideLeft.isDisplay=(true)
+        } else {
+            backButton.visibility = (View.INVISIBLE)
+            ImageLoader.getInstance().displayImage(null, hideLeft)
+            hideLeft.isDisplay = (false);
+        }
+
+    }
+
+    override fun onGetNextImg(yImageView:YImageView) {
+        Log.d(TAG, "onGetNextImg");
+        var tmp = contentView
+        contentView = hideRight
+        hideRight = hideLeft
+        hideLeft = tmp
+
+        contentView.locationIndex = (0)
+        hideLeft.locationIndex = (-1)
+        hideRight.locationIndex = (1)
+        alingLeftOrRight = 1
+        var imgUrl:String? = null
+        if (imgChangeListener != null) {
+            imgUrl = imgChangeListener?.onGetNextImg(this);
+        }
+        if (imgUrl != null) {
+            if (backButton.visibility == View.INVISIBLE) {
+                backButton.visibility = (View.VISIBLE)
+            }
+            ImageLoader.getInstance().displayImage(imgUrl, hideRight, DIOptionsNoneScaled.options);
+            hideRight.isDisplay = (true)
+        } else {
+            nextButton.visibility = (View.INVISIBLE)
+            ImageLoader.getInstance().displayImage(null, hideRight);
+            hideRight.isDisplay = (false)
+        }
+    }
+
+
+    var alingLeftOrRight:Int = 0;
+
+
+}
