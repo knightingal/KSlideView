@@ -46,50 +46,51 @@ class YImageView : ImageView {
         screamH = b - t
         screamW = r - l
         minX = screamW - bitmap_W
-        minY = screamH - bitmap_H
-        if (minY > 0) {
-            minY = 0
-        }
+        minY = if (screamH - bitmap_H > 0) 0 else screamH - bitmap_H
+
         if (bitmap_W < screamW) {
             val rat = (bitmap_H.toFloat())/(bitmap_W.toFloat())
             bitmap_W = screamW
             bitmap_H = (rat * bitmap_W).toInt()
         }
 
-        val left:Int
-        val top:Int
-        val right:Int
-        val bottom:Int
         val contentImageWidth = yImageSlider.contentView.bitmap_W
-        if (locationIndex == 1) {
-            if (yImageSlider.alingLeftOrRight == 0) {
-                left = contentImageWidth + YImageSlider.SPLITE_W
-                right = contentImageWidth + YImageSlider.SPLITE_W + bitmap_W
-            } else {
-                left = screamW + YImageSlider.SPLITE_W
-                right = screamW + YImageSlider.SPLITE_W + bitmap_W
-            }
-        } else if (locationIndex == -1) {
-            if (yImageSlider.alingLeftOrRight == 0) {
-                left = -bitmap_W - YImageSlider.SPLITE_W
-                right = -YImageSlider.SPLITE_W
-            } else {
-                left = -(bitmap_W + YImageSlider.SPLITE_W + contentImageWidth - screamW)
-                right = -(YImageSlider.SPLITE_W + contentImageWidth - screamW)
-            }
-        } else {
-            if (yImageSlider.alingLeftOrRight == 0) {
-                left = 0
-                right = bitmap_W
-            } else {
-                left = -(contentImageWidth - screamW)
-                right = screamW
-            }
-        }
 
-        top = (screamH - bitmap_H) / 2
+        val left = if (locationIndex == 1)
+            if (yImageSlider.alingLeftOrRight == 0)
+                contentImageWidth + YImageSlider.SPLITE_W
+            else
+                screamW + YImageSlider.SPLITE_W
+        else if (locationIndex == -1)
+            if (yImageSlider.alingLeftOrRight == 0)
+                -bitmap_W - YImageSlider.SPLITE_W
+            else
+                -(bitmap_W + YImageSlider.SPLITE_W + contentImageWidth - screamW)
+        else
+            if (yImageSlider.alingLeftOrRight == 0)
+                0
+            else
+                -(contentImageWidth - screamW)
+
+        val right = if (locationIndex == 1)
+            if (yImageSlider.alingLeftOrRight == 0)
+                contentImageWidth + YImageSlider.SPLITE_W + bitmap_W
+            else
+                screamW + YImageSlider.SPLITE_W + bitmap_W
+        else if (locationIndex == -1)
+            if (yImageSlider.alingLeftOrRight == 0)
+                -YImageSlider.SPLITE_W
+            else
+                -(YImageSlider.SPLITE_W + contentImageWidth - screamW)
+        else
+            if (yImageSlider.alingLeftOrRight == 0)
+                bitmap_W
+            else
+                screamW
+
+        val top = (screamH - bitmap_H) / 2
         originY = top
-        bottom = top + bitmap_H
+        val bottom = top + bitmap_H
         Log.d(TAG, "left=$left, right=$right, top=$top, bottom=$bottom")
 
         val isChanged = super.setFrame(0, top, bitmap_W, bottom)
@@ -196,15 +197,14 @@ class YImageView : ImageView {
             }
         }
 
-        val aTime:Long
 
         var duration = ANIM_DURATION
         if (dest > 0 || dest < minPos) {
-            if (dest > 0) {
-                aTime = (-currPos * 2 * 1000 / velocity).toLong()
-            } else {
-                aTime = ((minPos.toFloat() - currPos) * 2 * 1000 / velocity).toLong()
-            }
+            val aTime = if (dest > 0)
+                (-currPos * 2 * 1000 / velocity).toLong()
+            else
+                ((minPos.toFloat() - currPos) * 2 * 1000 / velocity).toLong()
+
             if (aTime < 0 || aTime > ANIM_DURATION) {
                 Log.e(TAG, "aTime error: $aTime")
             } else {
@@ -233,10 +233,8 @@ class YImageView : ImageView {
                 }
             }
 
-            val aTime: Long
-
             if (dest > 0 || dest < minPos) {
-                aTime = if (dest > 0)
+                val aTime = if (dest > 0)
                     (-currPos * 2 * 1000 / velocity).toLong()
                 else
                     ((minPos.toFloat() - currPos) * 2 * 1000 / velocity).toLong()
