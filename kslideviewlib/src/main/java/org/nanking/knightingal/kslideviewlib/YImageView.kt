@@ -431,45 +431,11 @@ class YImageView : ImageView {
         hideImageAnimBack()
     }
 
-    private fun postGetBackImg() {
-        if (edgeListener != null) {
-            edgeListener?.onGetBackImg(this)
-        }
-    }
+    lateinit var postGetBackImg: ()->Unit
+    lateinit var postGetNextImg: ()->Unit
 
-    private fun postGetNextImg() {
-        if (edgeListener != null) {
-            edgeListener?.onGetNextImg(this)
-        }
-    }
-
-    interface EdgeListener {
-        fun onXEdge(yImageView:YImageView)
-
-        fun onYEdge(yImageView:YImageView)
-
-        fun onGetBackImg(yImageView:YImageView)
-
-        fun onGetNextImg(yImageView:YImageView)
-    }
-
-    private var edgeListener:EdgeListener? = null
-
-    public fun setEdgeListener(edgeListener:EdgeListener) {
-        this.edgeListener = edgeListener
-    }
-
-    private fun postXEdgeEvent() {
-        if (edgeListener != null) {
-            edgeListener?.onXEdge(this)
-        }
-    }
-
-    private fun postYEdgeEvent() {
-        if (edgeListener != null) {
-            edgeListener?.onYEdge(this)
-        }
-    }
+    lateinit var postXEdgeEvent: ()->Unit
+    lateinit var postYEdgeEvent: ()->Unit
 
     var isOnLeftEdge = false
     var isOnRightEdge = false

@@ -10,7 +10,7 @@ import android.widget.ImageView
 
 import com.nostra13.universalimageloader.core.ImageLoader
 
-class YImageSlider : ViewGroup, YImageView.EdgeListener {
+class YImageSlider : ViewGroup {
     companion object {
 
         val TAG = "YImageSlider"
@@ -32,12 +32,24 @@ class YImageSlider : ViewGroup, YImageView.EdgeListener {
 
     private fun init(context:Context) {
         contentView = YImageView(context, this, 0, 0)
-        contentView.setEdgeListener(this)
         hideLeft = YImageView(context, this, -1, 1)
         hideRight = YImageView(context, this, 1, 2)
 
-        hideLeft.setEdgeListener(this)
-        hideRight.setEdgeListener(this)
+        contentView.postGetBackImg = this::onGetBackImg
+        hideLeft.postGetBackImg = this::onGetBackImg
+        hideRight.postGetBackImg = this::onGetBackImg
+
+        contentView.postGetNextImg = { onGetNextImg() }
+        hideLeft.postGetNextImg = { onGetNextImg() }
+        hideRight.postGetNextImg = { onGetNextImg() }
+
+        contentView.postXEdgeEvent = { onXEdge() }
+        hideLeft.postXEdgeEvent = { onXEdge() }
+        hideRight.postXEdgeEvent = { onXEdge() }
+
+        contentView.postYEdgeEvent = { onYEdge() }
+        hideLeft.postYEdgeEvent = { onYEdge() }
+        hideRight.postYEdgeEvent = { onYEdge() }
 
         backButton = ImageView(context)
         nextButton = ImageView(context)
@@ -84,11 +96,11 @@ class YImageSlider : ViewGroup, YImageView.EdgeListener {
         nextButton.layout(width - 48, height / 2 - 24, width, height / 2 + 24)
     }
 
-    override fun onXEdge(yImageView:YImageView) {
+    fun onXEdge() {
 
     }
 
-    override fun onYEdge(yImageView:YImageView) {
+    fun onYEdge() {
 
     }
 
@@ -143,7 +155,7 @@ class YImageSlider : ViewGroup, YImageView.EdgeListener {
 
     var imgChangeListener:ImgChangeListener? = null
 
-    override fun onGetBackImg(yImageView:YImageView) {
+    fun onGetBackImg() {
         Log.d(TAG, "onGetBackImg")
         var tmp = contentView
         contentView = hideLeft
@@ -173,7 +185,7 @@ class YImageSlider : ViewGroup, YImageView.EdgeListener {
 
     }
 
-    override fun onGetNextImg(yImageView:YImageView) {
+    fun onGetNextImg() {
         Log.d(TAG, "onGetNextImg");
         var tmp = contentView
         contentView = hideRight
