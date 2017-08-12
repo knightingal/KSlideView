@@ -43,9 +43,9 @@ class YImageSlider : ViewGroup {
         hideLeft.postGetNextImg = { onGetNextImg() }
         hideRight.postGetNextImg = { onGetNextImg() }
 
-        contentView.postXEdgeEvent = { onXEdge() }
-        hideLeft.postXEdgeEvent = { onXEdge() }
-        hideRight.postXEdgeEvent = { onXEdge() }
+        contentView.postXEdgeEvent = this.onXEdge
+        hideLeft.postXEdgeEvent = this.onXEdge
+        hideRight.postXEdgeEvent = this.onXEdge
 
         contentView.postYEdgeEvent = { onYEdge() }
         hideLeft.postYEdgeEvent = { onYEdge() }
@@ -96,12 +96,12 @@ class YImageSlider : ViewGroup {
         nextButton.layout(width - 48, height / 2 - 24, width, height / 2 + 24)
     }
 
-    fun onXEdge() {
-
+    val onXEdge : ()->Unit = {
+        Log.d(TAG, "onXEdge")
     }
 
     fun onYEdge() {
-
+        Log.d(TAG, "onYEdge")
     }
 
     fun setHideLeftSrc(index:Int) {
