@@ -339,9 +339,9 @@ class YImageView : ImageView {
             doBackImgAnim()
         } else if (upx < screamW - this.bitmap_W && yImageSlider.hideRight.isDisplay) {
             doNextImgAnim()
-        } else if (upx > screamW / 3) {
+        } else if (upx > screamW / 3 && yImageSlider.hideLeft.isDisplay) {
             doBackImgAnim()
-        } else if (upx + this.bitmap_W < screamW * 2 / 3) {
+        } else if (upx + this.bitmap_W < screamW * 2 / 3 && yImageSlider.hideRight.isDisplay) {
             doNextImgAnim()
         } else {
             animDataX = calAnimDataX(x, minX, vx)
