@@ -505,16 +505,11 @@ class YImageView : ImageView {
         this.x = newImgX
         this.y = newImgY
 
-        yImageSlider.hideLeft.addDiff(diffX, 0.toFloat())
-        yImageSlider.hideRight.addDiff(diffX, 0.toFloat())
+        yImageSlider.hideLeft.x += diffX
+        yImageSlider.hideRight.x += diffX
 
         currentX = event.rawX
         currentY = event.rawY
-    }
-
-    public fun addDiff(diffX:Float, diffY:Float) {
-        setX(getX() + diffX)
-        setY(getY() + diffY)
     }
 
     override fun setImageBitmap(bm: Bitmap?) {
