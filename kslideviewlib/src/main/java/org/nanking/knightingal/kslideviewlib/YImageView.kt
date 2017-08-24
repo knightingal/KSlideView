@@ -125,22 +125,18 @@ class YImageView : ImageView {
 
         val animators = ArrayList<Animator>()
         animators.add(ObjectAnimator.ofFloat(this, View.X, x, destX))
-        if (yImageSlider.hideLeft.isDisplay) {
-            animators.add(ObjectAnimator.ofFloat(
-                    yImageSlider.hideLeft,
-                    View.X,
-                    yImageSlider.hideLeft.x,
-                    destX - yImageSlider.hideLeft.bitmap_W - YImageSlider.SPLITE_W
-            ))
-        }
-        if (yImageSlider.hideRight.isDisplay) {
-            animators.add(ObjectAnimator.ofFloat(
-                    yImageSlider.hideRight,
-                    View.X,
-                    yImageSlider.hideRight.x,
-                    destX + bitmap_W + YImageSlider.SPLITE_W
-            ))
-        }
+        animators.add(ObjectAnimator.ofFloat(
+                yImageSlider.hideLeft,
+                View.X,
+                yImageSlider.hideLeft.x,
+                destX - yImageSlider.hideLeft.bitmap_W - YImageSlider.SPLITE_W
+        ))
+        animators.add(ObjectAnimator.ofFloat(
+                yImageSlider.hideRight,
+                View.X,
+                yImageSlider.hideRight.x,
+                destX + bitmap_W + YImageSlider.SPLITE_W
+        ))
 
         setXE.playTogether(animators)
         setXE.duration = duration
@@ -269,14 +265,12 @@ class YImageView : ImageView {
                 originY.toFloat()
         ))
         Log.d(TAG, "doBackImgAnim, originY=$originY")
-        if (yImageSlider.hideLeft.isDisplay) {
-            animators.add(ObjectAnimator.ofFloat(
-                    yImageSlider.hideLeft, View.X, yImageSlider.hideLeft.x, 0.toFloat()
-            ))
-            animators.add(ObjectAnimator.ofFloat(
-                    yImageSlider.hideLeft, View.Y, yImageSlider.hideLeft.y, yImageSlider.hideLeft.originY.toFloat()
-            ))
-        }
+        animators.add(ObjectAnimator.ofFloat(
+                yImageSlider.hideLeft, View.X, yImageSlider.hideLeft.x, 0.toFloat()
+        ))
+        animators.add(ObjectAnimator.ofFloat(
+                yImageSlider.hideLeft, View.Y, yImageSlider.hideLeft.y, yImageSlider.hideLeft.originY.toFloat()
+        ))
         setX.playTogether(animators)
         setX.duration = ANIM_DURATION
         setX.addListener(object : AnimatorListenerAdapter() {
@@ -308,20 +302,18 @@ class YImageView : ImageView {
                 y,
                 originY.toFloat()
         ))
-        if (yImageSlider.hideRight.isDisplay) {
-            animators.add(ObjectAnimator.ofFloat(
-                    yImageSlider.hideRight,
-                    View.X,
-                    yImageSlider.hideRight.x,
-                    -(yImageSlider.hideRight.bitmap_W - screamW).toFloat()
-            ))
-            animators.add(ObjectAnimator.ofFloat(
-                    yImageSlider.hideRight,
-                    View.Y,
-                    yImageSlider.hideRight.y,
-                    yImageSlider.hideRight.originY.toFloat()
-            ))
-        }
+        animators.add(ObjectAnimator.ofFloat(
+                yImageSlider.hideRight,
+                View.X,
+                yImageSlider.hideRight.x,
+                -(yImageSlider.hideRight.bitmap_W - screamW).toFloat()
+        ))
+        animators.add(ObjectAnimator.ofFloat(
+                yImageSlider.hideRight,
+                View.Y,
+                yImageSlider.hideRight.y,
+                yImageSlider.hideRight.originY.toFloat()
+        ))
         setX.playTogether(animators)
         setX.duration = ANIM_DURATION
         setX.addListener(object : AnimatorListenerAdapter() {
@@ -348,22 +340,18 @@ class YImageView : ImageView {
             setX = AnimatorSet()
             val animators = ArrayList<Animator>()
             animators.add(ObjectAnimator.ofFloat(this, View.X, x, animDataX.dest))
-            if (yImageSlider.hideLeft.isDisplay) {
-                animators.add(ObjectAnimator.ofFloat(
-                        yImageSlider.hideLeft,
-                        View.X,
-                        yImageSlider.hideLeft.x,
-                        animDataX.dest - yImageSlider.hideLeft.bitmap_W - YImageSlider.SPLITE_W
-                ))
-            }
-            if (yImageSlider.hideRight.isDisplay) {
-                animators.add(ObjectAnimator.ofFloat(
-                        yImageSlider.hideRight,
-                        View.X,
-                        yImageSlider.hideRight.x,
-                        animDataX.dest + bitmap_W + YImageSlider.SPLITE_W
-                ))
-            }
+            animators.add(ObjectAnimator.ofFloat(
+                    yImageSlider.hideLeft,
+                    View.X,
+                    yImageSlider.hideLeft.x,
+                    animDataX.dest - yImageSlider.hideLeft.bitmap_W - YImageSlider.SPLITE_W
+            ))
+            animators.add(ObjectAnimator.ofFloat(
+                    yImageSlider.hideRight,
+                    View.X,
+                    yImageSlider.hideRight.x,
+                    animDataX.dest + bitmap_W + YImageSlider.SPLITE_W
+            ))
             setX.playTogether(animators)
             setX.duration = animDataX.duration
             if (animDataX.useAccelerateInterpolator) {
